@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang = "en">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<head>
+    <meta charset = "UTF-8">
+    <title>Room Booking</title>
+    <style type="text/css">
+        body{
+            background-image: url('bg_main.jpg');
+            background-repeat: no-repeat;
+            background-size: 100%;
+            background-color: #ffcc66;
+            margin: 10px;
+            align-items:center;
+        }
+
+        .container{
+            display: block;
+            background-color: #fff;
+            /*border-radius:10px;*/
+            width:55%;
+            height: 60%;
+            padding: 10px;
+            margin: auto;
+        }
+        div.header{
+            background-color: rgba(220, 159, 17, 1);
+            padding: 5px;
+            margin: 5px;
+            text-align: center;
+            /*border-radius: 10px;*/
+            font-family: 'Times New Roman', Times, serif;
+        }
+        div.subHeader{
+            display: inline-block;
+            background-color: rgba(253, 211, 115, 1);
+            margin: 5px;
+            padding-left: 5px;
+            width: 97%;
+        }
+        table{
+            line-height: 220%;
+            width: 98%;
+            font-size: 100%;
+            font-family: 'Times New Roman', Times, serif;
+            margin:auto;
+            font-weight: bold;
+        }
+        td{
+           
+            padding-left: 5px;
+            background-color: #ffcc66;
+            margin: 5px;
+        }
+        th{
+            text-align: center;
+            font-weight: bold;
+            font-size: large;
+            background-color: rgba(255, 170, 0,0.4);
+        }
+        input{
+            background-color: #ffcc66;
+            font-size: medium;
+            font-family:'Times New Roman', Times, serif;
+            color:#000;
+            width: 23%;
+            margin: 5px;
+            padding: 10px;
+            transition: background-color color;
+            outline: none;
+        }
+        input:hover{
+            background-color: #e69900;
+            color:black;
+        }
+       *{
+            box-sizing: border-box;
+        }
+        .column {
+            float: left;
+            width: 25%;
+            padding: 5px;
+        }
+  
+  /* Clearfix (clear floats) */
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        .logos{
+            width:75px;
+            height:50px;
+            margin:0 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header"><h1>Room Booking!</h1></div>
+        <div ng-app="myApp" ng-controller="bookingController">
+            <table>
+                <tr>
+                    <td>No. of Rooms:
+                    <td><input type="text" ng-model="x" />
+                </tr>
+                <tr>
+                    <td>No. of Adults:
+                    <td><input type="text" ng-model="y" />
+                </tr>
+                <tr>
+                    <td>No. of Days:
+                    <td><input type="text" ng-model="z" />
+                </tr>
+                <tr>
+                    <td>Total Price is :
+                    <td style="font-size: large;"><b style="padding-left: 7px;"> Rs. {{result}}</b></td>
+                </tr>
+                <tr>
+                    <td>Price After applying Discount :
+                    <td style="font-size: large;"><b style="padding-left: 7px;"> Rs. {{disResult}}</b></td>
+                </tr>
+            </table>
+            <center>
+            <input type="button" ng-click="calcPrice()" value="Calculate Price" />
+            <input type="button" ng-click="calcFiveDiscount()" value="5% Off!" />
+            <input type="button" ng-click="calcTenDiscount()" value="10% Off!" />
+            <!--input type="button" ng-click="calcTwentyDiscount()" value="20% Off!" /-->
+        </center>
+            <br>
+            <div class="subHeader">
+                <comment></comment>
+            </div> 
+        </div>
+    
+            <script>
+            var myApp = angular.module("myApp", []);
+            myApp.service("bookingService", function() {
+                this.calc = function(x, y, z) {
+                    return ((parseInt(x) * 500) + (parseInt(y) * 1000) + (parseInt(z) * 10));
+                }
+                this.fiveDis = function(x, y, z) {
+                    return (((parseInt(x) * 500) + (parseInt(y) * 1000) + (parseInt(z) * 10)) - ((((parseInt(x) * 500) + (parseInt(y) * 1000) + (parseInt(z) * 10)) * 5)/100));
+                }
+                this.tenDis = function(x, y, z) {
+                    return (((parseInt(x) * 500) + (parseInt(y) * 1000) + (parseInt(z) * 10)) - ((((parseInt(x) * 500) + (parseInt(y) * 1000) + (parseInt(z) * 10)) * 10)/100));
+                }
+                this.twentyDis = function(x, y, z) {
+                    return (((parseInt(x) * 500) + (parseInt(y) * 1000) + (parseInt(z) * 10)) - ((((parseInt(x) * 500) + (parseInt(y) * 1000) + (parseInt(z) * 10)) * 20)/100));
+                }
+            });
+            myApp.controller( "bookingController", function($scope, bookingService) {
+                $scope.x = 1;
+                $scope.y = 1;
+                $scope.z = 1;
+                $scope.result = 0;
+                $scope.disResult = 0;
+                $scope.calcPrice = function() {
+                    $scope.result = bookingService.calc($scope.x, $scope.y, $scope.z)
+                }
+                $scope.calcFiveDiscount = function() {
+                    $scope.disResult = bookingService.fiveDis($scope.x, $scope.y, $scope.z)
+                }
+                $scope.calcTenDiscount = function() {
+                    $scope.disResult = bookingService.tenDis($scope.x, $scope.y, $scope.z)
+                }
+                $scope.calcTwentyDiscount = function() {
+                    $scope.disResult = bookingService.twentyDis($scope.x, $scope.y, $scope.z)
+                }
+            });
+            
+            myApp.component("comment",{ 
+                controller: "bookingController",
+                service: "bookingService",
+                template: `Destination: <input type="text" ng-model="destination"> 
+                            Hotel Name: <input type="text" ng-model="hotelName"> 
+                        <p>Thank you for choosing <strong>{{destination}}</strong> as Destination. Enjoy you visit @ <strong>{{hotelName}}</strong>.</p>
+                `
+            });  
+        </script>
+    </body>
+    </html>
