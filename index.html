@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang = "en">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<head>
+    <meta charset = "UTF-8">
+    <title>Room Booking</title>
+	<link href="rb.css" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="rb.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header"><h1>Room Booking</h1></div>
+        <div ng-app="myApp" ng-controller="bookingController">
+            <table>
+                <tr>
+                    <td>No. of Rooms:
+                    <td><input type="text" ng-model="x" />
+                </tr>
+                <tr>
+                    <td>No. of Adults:
+                    <td><input type="text" ng-model="y" />
+                </tr>
+                <tr>
+                    <td>No. of Days:
+                    <td><input type="text" ng-model="z" />
+                </tr>
+                <tr>
+                    <td>Total Price is :
+                    <td style="font-size: large;"><b style="padding-left: 7px;"> Rs. {{result}}</b></td>
+                </tr>
+                <tr>
+                    <td>Price After applying Discount :
+                    <td style="font-size: large;"><b style="padding-left: 7px;"> Rs. {{disResult}}</b></td>
+                </tr>
+            </table>
+            <center>
+            <input type="button" ng-click="calcPrice()" value="Calculate Price" />
+            <input type="button" ng-click="calcFiveDiscount()" value="5% Off!" />
+            <input type="button" ng-click="calcTenDiscount()" value="10% Off!" />
+            <!--input type="button" ng-click="calcTwentyDiscount()" value="20% Off!" /-->
+        </center>
+            <br>
+            <div class="subHeader">
+                <comment></comment>
+            </div> 
+        </div>
+    
+    </body>
+    </html>
